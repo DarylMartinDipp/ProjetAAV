@@ -89,7 +89,7 @@ def solve_knapsack_greedy(knapsack, objects_dict) -> Knapsack:
     # Keep adding content to the knapsack until no more content can be added
     knapsack_weight = knapsack.get_value_and_weight(objects_dict)[1]
 
-    for item_name, useless in sorted_greedy_list:
+    for item_name, value_per_weight in sorted_greedy_list:
         # Check if the next content will fit in the knapsack
         if knapsack_weight + objects_dict[item_name][1] <= knapsack.capacity:
             knapsack_weight += objects_dict[item_name][1]
@@ -107,15 +107,13 @@ def get_sorted_greedy_list(objects_dict) -> list:
     :param objects_dict: the dictionary used
     :return: list: list with the name of each item in the dictionary and its value per weight
     """
-    # Make a dictionary which associate objects names by its value per weight
-    greedy_dict = {}
-    for item in objects_dict.keys():
-        greedy_dict[item] = objects_dict[item][0] / objects_dict[item][1]
-    # Make a sorted list by value per weight with the greedy_dict content
-    sorted_greedy_list = sorted(greedy_dict.items(),
-                                key=lambda content: content[1],
-                                reverse=True)
-    return sorted_greedy_list
+    # Make a list which associate objects names by its value per weight
+    greedy_list = []
+    for item_name, (value, weight) in objects_dict.items():
+        greedy_list.append((item_name, value / weight))
+    # Sort the greedy_list by value per weight
+    greedy_list.sort(key=lambda item: item[1], reverse=True)
+    return greedy_list
 
 
 def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
