@@ -122,5 +122,59 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
-    # TODO
-    pass
+    index_weight = knapsack.capacity
+    # si le sac a une capacité = 0 on le retourne directement
+    if index_weight == 0:
+        return knapsack
+    index_items = len(objects_dict)
+    # transforme le dictionnaire en liste
+    objects_list = list(objects_dict.items())
+    # initialise la matrice (1 ligne par item et 1 colonne par poids (avec 0))
+    matrice = get_dynamic_program_matrice(index_weight, index_items, objects_list)
+
+    # afin d'eviter d'avoir une erreur d'index
+    index_items -= 1
+
+    while matrice[index_items][index_weight] == matrice[index_items][index_weight - 1]:
+        index_weight -= 1
+
+    while index_weight > 0:
+        while index_items > 0 and matrice[index_items][index_weight] == matrice[index_items - 1][index_weight]:
+            index_items -= 1
+        index_weight = index_weight - objects_list[index_items][1][1]
+        if index_weight >= 0:
+            knapsack.content.append(objects_list[index_items][0])
+        index_items -= 1
+    return knapsack
+
+
+def get_dynamic_program_matrice(weight, data_size, data_list):
+    matrice = [[0 for _ in range(weight + 1)] for _ in range(data_size)]
+    # programmation dynamique
+    # pour le premier objet (pb d'index sinon)
+    for i in range(0, weight + 1):
+        # [0] objet 0, [1] tableau, [1] poids
+        # si le poids de la colonne est assez grand pour contenir l'objet
+        if not data_list[0][1][1] > i:
+            matrice[0][i] = data_list[0][1][0]
+    # pour le reste des objets
+    for i in range(1, data_size):  # fait le tour des objets
+        for j in range(0, weight + 1):  # fait le tour des poids
+            if data_list[i][1][1] > j:
+                matrice[i][j] = matrice[i - 1][j]
+            else:  # on prend le max entre la ligne du dessus a la même colonne et la valeur optimisé a la ligne du dessus pour un poids pouvant contenir le dernier objet
+                matrice[i][j] = max(matrice[i - 1][j], matrice[i - 1][j - data_list[i][1][1]] + data_list[i][1][0])
+    return matrice
+
+
+if __name__ == '__main__':
+    # dico = {
+    #     'Objet0': [15, 5],
+    #     'Objet1': [10, 1],
+    #     'Objet2': [12, 3],
+    #     'Objet3': [4, 17],
+    #     'Objet4': [20, 4],
+    #     'Objet5': [2, 1],
+    # }
+    # sac = Knapsack(5)
+    # solve_knapsack_optimal(sac, dico).print_content(dico)
