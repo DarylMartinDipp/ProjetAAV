@@ -79,10 +79,6 @@ class TestGreedySmall:
         sack, objects_dict = get_small_objects_dict()
         filled_sack = solve_knapsack_greedy(knapsack=sack, objects_dict=objects_dict)
         assert filled_sack.get_value_and_weight(objects_dict) == (6544, 59)
-        # sac, objects_dict = get_small_objects_dict()
-        # sac_rempli = solve_knapsack_optimal(sac, objects_dict)
-        # print('\n greedy :', filled_sack.info_to_string(objects_dict))
-        # print('optimal :', sac_rempli.info_to_string(objects_dict))
 
     @pytest.mark.parametrize(
         "capacity, weight, value",
@@ -98,10 +94,6 @@ class TestGreedySmall:
         sack, objects_dict = get_small_objects_dict(capacity)
         filled_sack = solve_knapsack_greedy(knapsack=sack, objects_dict=objects_dict)
         assert filled_sack.get_value_and_weight(objects_dict) == (weight, value)
-        # sac, objects_dict = get_small_objects_dict(capacity)
-        # sac_rempli = solve_knapsack_optimal(sac, objects_dict)
-        # print('\n greedy :', filled_sack.info_to_string(objects_dict))
-        # print('optimal :', sac_rempli.info_to_string(objects_dict))
 
 
 class TestGreedyMedium:
@@ -110,10 +102,6 @@ class TestGreedyMedium:
         objects_dict = get_medium_objects_dict()
         filled_sack = solve_knapsack_greedy(knapsack=sack, objects_dict=objects_dict)
         assert filled_sack.get_value_and_weight(objects_dict) == (118000455, 100)
-        # sac2 = Knapsack(100)
-        # sac_rempli = solve_knapsack_optimal(sac2, objects_dict)
-        # print('\n greedy :', filled_sack.info_to_string(objects_dict))
-        # print('optimal :', sac_rempli.info_to_string(objects_dict))
 
     @pytest.mark.parametrize(
         "capacity, weight, value",
@@ -134,15 +122,10 @@ class TestGreedyMedium:
         assert filled_sack.get_value_and_weight(objects_dict) == (weight, value)
         if capacity > 5:
             assert "Oeil et Main de Vecna" in sack.content
-        # sac2 = Knapsack(capacity)
-        # sac_rempli = solve_knapsack_optimal(sac2, objects_dict)
-        # print('\n greedy :', filled_sack.info_to_string(objects_dict))
-        # print('optimal :', sac_rempli.info_to_string(objects_dict))
 
     @pytest.mark.parametrize(
         "capacity, weight, value",
-        # [(1000000, 203653539, 20737)] , (100000000, 203671588, 1020746)])
-        [(100000000, 203671588, 1020746)])
+        [(1000000, 203653539, 20737), (100000000, 203671588, 1020746)])
     def test_solve_big(self, capacity, weight, value):
         sack = Knapsack(capacity)
         objects_dict = get_medium_objects_dict()
@@ -150,7 +133,3 @@ class TestGreedyMedium:
         assert filled_sack.get_value_and_weight(objects_dict) == (weight, value)
         if capacity > 5:
             assert "Oeil et Main de Vecna" in sack.content
-        # sac_2 = Knapsack(capacity)
-        # sac_rempli = solve_knapsack_optimal(sac_2, objects_dict)
-        # print('\n greedy :', filled_sack.info_to_string(objects_dict))
-        # print('optimal :', sac_rempli.info_to_string(objects_dict))
