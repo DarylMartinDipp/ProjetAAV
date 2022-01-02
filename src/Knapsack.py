@@ -201,8 +201,27 @@ def get_dynamic_program_matrix(weight, data_size, data_list):
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
-    # TODO
-    pass
+    # Transform the dictionary into a list
+    objects_list = list(objects_dict.items())
+
+    _, liste = brute_force_research(knapsack.capacity, objects_list, [])
+    for item in liste:
+        knapsack.content.append(item[0])
+    return knapsack
+
+
+def brute_force_research(max_weight, objects_liste, elements_selection) -> (int, Knapsack):
+    if objects_liste:
+        val1, lstVal1 = brute_force_research(max_weight, objects_liste[1:], elements_selection)
+        val = objects_liste[0]
+        if val[1][1] <= max_weight:
+            val2, lstVal2 = brute_force_research(max_weight - val[1][1], objects_liste[1:], elements_selection + [val])
+            if val1 < val2:
+                return val2, lstVal2
+
+        return val1, lstVal1
+    else:
+        return sum([i[1][0] for i in elements_selection]), elements_selection
 
 if __name__ == '__main__':
     dico = {
@@ -212,6 +231,11 @@ if __name__ == '__main__':
         'Objet3': [4, 17],
         'Objet4': [20, 4],
         'Objet5': [2, 1],
+    }
+    diico = {
+        'Objet0': [12, 5],
+        'Objet1': [10, 3],
+        'Objet2': [6, 2],
     }
     sac = Knapsack(5)
     solve_knapsack_optimal(sac, dico).print_content(dico)
