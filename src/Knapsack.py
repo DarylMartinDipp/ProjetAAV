@@ -121,13 +121,8 @@ def get_sorted_greedy_list(objects_dict) -> list:
 
 
 def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
-    # TODO
-    pass
-
-
-def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
     """
-    Resolve the knapsack problem in the optimal way :
+    Resolve the knapsack problem in the best way :
     give the best solution, searching among all the possible solutions.
     :param knapsack: the knapsack to sort
     :param objects_dict: the dictionary used
@@ -204,6 +199,10 @@ def get_dynamic_program_matrix(weight, data_size, data_list):
                 matrix[i][j] = max(matrix[i - 1][j], matrix[i - 1][j - item_weight] + item_value)
     return matrix
 
+
+def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
+    # TODO
+    pass
 
 if __name__ == '__main__':
     dico = {
