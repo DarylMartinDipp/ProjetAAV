@@ -87,7 +87,7 @@ def solve_knapsack_greedy(knapsack, objects_dict) -> Knapsack:
     elements having the greatest value per weight, until the moment when the bag is full.
     :param knapsack: the knapsack to fill
     :param objects_dict: the dictionary used
-    :return: KnapsackComplet: the knapsack filled
+    :return: Knapsack: the knapsack filled
     """
     # Fill the knapsack with objects which have the best value per weight
     sorted_greedy_list = get_sorted_greedy_list(objects_dict)
@@ -128,7 +128,7 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
     give the best solution, searching among all the possible solutions.
     :param knapsack: the knapsack to fill
     :param objects_dict: the dictionary used
-    :return: KnapsackComplet: the knapsack filled
+    :return: Knapsack: the knapsack filled
     """
     index_weight = knapsack.capacity
 
@@ -205,20 +205,19 @@ def get_dynamic_program_matrix(weight, data_size, data_list):
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
     """
     Resolve the knapsack problem in the optimal way :
-    give a solution with the highest value possible,
-    searching among all the possible combination.
+    give the best solution, searching among all the possible solutions.
     :param knapsack: the knapsack to fill
     :param objects_dict: the dictionary used
-    :return: KnapsackComplet: the knapsack filled
+    :return: Knapsack: the knapsack filled
     """
     # Transform the dictionary into a list
     objects_list = list(objects_dict.items())
 
-    # Get the brute force result
-    _, liste = brute_force_research(knapsack.capacity, objects_list, [])
+    # Find the best possible solutions with the brute_force_research method
+    _, item_to_add = brute_force_research(knapsack.capacity, objects_list, [])
 
-    # Fill the knapsack with the combination given by the brute force algorithm
-    for item in liste:
+    # Add all the required items to the knapsack
+    for item in item_to_add:
         knapsack.content.append(item[0])
 
     return knapsack
@@ -241,7 +240,8 @@ def brute_force_research(max_weight, data_list, data_content) -> (int, list):
         # If the current item can fit in the knapsack
         if item[1][1] <= max_weight:
             # Do the "Brute force" algorithm by adding the current item in the combination
-            val_with_item, list_with_item = brute_force_research(max_weight - item[1][1], data_list[1:], data_content + [item])
+            val_with_item, list_with_item =\
+                brute_force_research(max_weight - item[1][1], data_list[1:], data_content + [item])
             # If the value increase with the current items
             if val_without_item < val_with_item:
                 return val_with_item, list_with_item
